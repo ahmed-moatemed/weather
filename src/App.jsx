@@ -4,6 +4,8 @@ import { Container } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import CloudIcon from '@mui/icons-material/Cloud';
 import Button from '@mui/material/Button'
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 const theme = createTheme({
   typography: {
@@ -12,6 +14,23 @@ const theme = createTheme({
 })
 
 function App() {
+  const [temp, setTemp] = useState(null);
+
+  useEffect(() => {
+    axios.get('https://api.openweathermap.org/data/2.5/weather?q=cairo&appid=e74d76f86bacc61e288f8127b8ff2cd0')
+      .then(function (response) {
+        // handle success
+        const responseTemp = Math.round(response.data.main.temp - 272.15)
+        setTemp(responseTemp);
+      })
+      .catch(function (error) {
+        // handle error
+        console.log(error);
+      })
+      .finally(function () {
+        // always executed
+      });
+  },[]);
   return (
     <>
     <ThemeProvider theme={theme}>
@@ -60,7 +79,7 @@ function App() {
                     <Typography variant="h1" 
                       style={{textAlign: 'right'}}
                     >
-                      24
+                      {temp}
                     </Typography>
 
                   {/* TODO temp image */}
