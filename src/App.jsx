@@ -6,6 +6,11 @@ import CloudIcon from '@mui/icons-material/Cloud';
 import Button from '@mui/material/Button'
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+import moment from 'moment';
+import 'moment/min/locales';
+import 'moment/locale/ar';
+moment.locale("ar"); 
 
 const theme = createTheme({
   typography: {
@@ -14,7 +19,10 @@ const theme = createTheme({
 })
 
 let cancelAxios = null;
+
 function App() {
+  const { t, i18n } = useTranslation();
+  const [dateAndTime, setDateAndTime] = useState('');
   const [temp, setTemp] = useState({
     number: null,
     description: '',
@@ -24,6 +32,11 @@ function App() {
   });
 
   useEffect(() => {
+    i18n.changeLanguage('ar');
+  }, [])
+
+  useEffect(() => {
+    setDateAndTime(moment().format('LLL'));
     axios.get(
       'https://api.openweathermap.org/data/2.5/weather?q=cairo&appid=e74d76f86bacc61e288f8127b8ff2cd0',
       {
@@ -90,11 +103,11 @@ function App() {
               <Typography variant="h2" 
                 style={{marginRight: '15px', fontWeight: 'bold'}}
               >
-                القاهره
+                {t('Cairo')}
               </Typography>
 
               <Typography variant="h5" style={{marginRight: '15px'}}>
-                ٢٣ مارس ٢٠٢٤
+                {dateAndTime}
               </Typography>
               </div>
               {/* ==== Cite & time */}
