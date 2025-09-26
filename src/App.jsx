@@ -31,6 +31,21 @@ function App() {
     icon: null,
   });
 
+  const [locale , setLocale] = useState('ar');
+  // EVent Handlers
+  function handelLanguageClick() {
+    if(i18n.language === 'ar') {
+      i18n.changeLanguage('en');
+      moment.locale("en");
+      setLocale('en');
+    } else {
+      i18n.changeLanguage('ar');
+      moment.locale("ar");
+      setLocale('ar');
+    }
+    setDateAndTime(moment().format('LLL'));
+  }
+
   useEffect(() => {
     i18n.changeLanguage('ar');
   }, [])
@@ -80,7 +95,7 @@ function App() {
       <Container maxWidth="sm" >
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection:'column'}}>
           {/* card */}
-          <div dir='rtl' style={{
+          <div dir={locale === 'ar' ? 'rtl' : 'ltr'} style={{
             backgroundColor: 'rgb(28 52 91 / 364', 
             color: '#fff', 
             padding: '10px',
@@ -93,7 +108,7 @@ function App() {
             <div>
 
               {/* Cite & time */}
-              <div dir='rtl' 
+              <div dir={locale === 'ar' ? 'rtl' : 'ltr'} 
                 style={{
                   display: 'flex', 
                   justifyContent: 'start', 
@@ -107,7 +122,8 @@ function App() {
               </Typography>
 
               <Typography variant="h5" style={{marginRight: '15px'}}>
-                {dateAndTime}
+                {/* {dateAndTime} */}
+                {t("Today")}
               </Typography>
               </div>
               {/* ==== Cite & time */}
@@ -122,7 +138,7 @@ function App() {
                     <Typography variant="h1" 
                       style={{textAlign: 'right'}}
                     >
-                      {temp.number}
+                      {t(temp.number)}
                     </Typography>
 
                     {/* TODO temp image */}
@@ -133,14 +149,14 @@ function App() {
                   <Typography variant="h6" 
                       style={{textAlign: 'right'}}
                   >
-                    {temp.description}
+                    {t(temp.description)}
                   </Typography>
 
                   {/* min & max */}
                   <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                    <h5> الصغري: {temp.min}</h5>
+                    <h5> {t('min')}: {t(temp.min)}</h5>
                     <h5 style={{margin: '0 10px'}}>|</h5>
-                    <h5> الكبري: {temp.max}</h5>
+                    <h5> {t('max')}: {t(temp.max)}</h5>
                   </div>
                   {/*==== min & max ===*/}
 
@@ -154,8 +170,11 @@ function App() {
           </div>
           {/* ==== card ==== */}
 
-          <div dir='rtl' style={{display: 'flex', justifyContent: 'end', width: '100%', marginTop: '20px'}}>
-            <Button variant="text" style={{color: 'white'}}>انجليزي</Button>
+          <div dir={locale === 'ar' ? 'rtl' : 'ltr'} style={{display: 'flex', justifyContent: 'end', width: '100%', marginTop: '20px'}}>
+            <Button variant="text" style={{color: 'white'}}
+              onClick={handelLanguageClick}>
+              { locale === 'ar' ? 'انجليزي' : 'Arabic' }
+            </Button>
           </div>
         </div>
       </Container>
