@@ -10,6 +10,10 @@ import { useTranslation } from 'react-i18next';
 import moment from 'moment';
 import 'moment/min/locales';
 import 'moment/locale/ar';
+// reducer import
+import { useSelector, useDispatch } from 'react-redux';
+import { changeResult } from './weatherApiSlice';
+
 moment.locale("ar"); 
 
 const theme = createTheme({
@@ -21,6 +25,13 @@ const theme = createTheme({
 let cancelAxios = null;
 
 function App() {
+  // redux code 
+  const result = useSelector((state) => {
+    console.log("state is ", state);
+    return state.result;
+  });
+  const dispatch = useDispatch();
+
   const { t, i18n } = useTranslation();
   const [dateAndTime, setDateAndTime] = useState('');
   const [temp, setTemp] = useState({
@@ -47,6 +58,8 @@ function App() {
   }
 
   useEffect(() => {
+    // tring redux
+    dispatch(changeResult());
     i18n.changeLanguage('ar');
   }, [])
 
@@ -67,7 +80,7 @@ function App() {
         const max = Math.round(response.data.main.temp_max - 272.15);
         const description = response.data.weather[0].description;
         const icon = response.data.weather[0].icon;
-        console.log(response);
+        //console.log(response);
         setTemp({
           number: responseTemp,
           description,

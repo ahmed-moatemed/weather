@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
-//TODOS IMPORT 
+import weatherApiSliceReducer from "./weatherApiSlice";
 
 export default configureStore ({
-  reducer: {},
+  reducer: {
+    weather: weatherApiSliceReducer
+  },
 });
