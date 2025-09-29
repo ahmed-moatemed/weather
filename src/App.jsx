@@ -3,7 +3,8 @@ import { createTheme, ThemeProvider } from '@mui/material'
 import { Container } from '@mui/system'
 import Typography from '@mui/material/Typography'
 import CloudIcon from '@mui/icons-material/Cloud';
-import Button from '@mui/material/Button'
+import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +14,7 @@ import 'moment/locale/ar';
 // reducer import
 import { useSelector, useDispatch } from 'react-redux';
 import { changeResult } from './weatherApiSlice';
+import { fetchWeather } from './weatherApiSlice';
 
 moment.locale("ar"); 
 
@@ -32,6 +34,9 @@ function App() {
   });
   const dispatch = useDispatch();
 
+  const isLoading = useSelector((state) => {
+    return state.weather.isLoading;
+  })
   const { t, i18n } = useTranslation();
   const [dateAndTime, setDateAndTime] = useState('');
   const [temp, setTemp] = useState({
@@ -59,7 +64,10 @@ function App() {
 
   useEffect(() => {
     // tring redux
-    dispatch(changeResult());
+    //dispatch(changeResult());
+    console.log("this is dispatch");
+    dispatch(fetchWeather());
+
     i18n.changeLanguage('ar');
   }, [])
 
@@ -148,6 +156,9 @@ function App() {
 
                   {/* tempreture */}
                   <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    {isLoading? (
+                      <CircularProgress style={{color: 'white'}} />
+                    ) : ('')}
                     <Typography variant="h1" 
                       style={{textAlign: 'right'}}
                     >
