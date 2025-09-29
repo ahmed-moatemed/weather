@@ -19,7 +19,8 @@ export const fetchWeather = createAsyncThunk("weatherApi/fetchWeather", async() 
     const description = response.data.weather[0].description;
     const icon = response.data.weather[0].icon;
 
-    console.log(response);
+    //console.log(response);
+    return {number: responseTemp, min , max, description, icon};
 })
 const weatherApiSlice = createSlice({
   name: 'weatherApi',
@@ -41,6 +42,7 @@ const weatherApiSlice = createSlice({
       state.isLoading = true;
     }).addCase(fetchWeather.fulfilled, (state,action) => {
       state.isLoading = false;
+      state.weather = action.payload;
     }).addCase(fetchWeather.rejected, (state, action) => {
       state.isLoading = false;
     })

@@ -28,24 +28,19 @@ let cancelAxios = null;
 
 function App() {
   // redux code 
-  const result = useSelector((state) => {
-    console.log("state is ", state);
-    return state.result;
-  });
   const dispatch = useDispatch();
 
   const isLoading = useSelector((state) => {
     return state.weather.isLoading;
   })
+
+  const temp = useSelector((state) => {
+    return state.weather.weather;
+  })
+
+
   const { t, i18n } = useTranslation();
   const [dateAndTime, setDateAndTime] = useState('');
-  const [temp, setTemp] = useState({
-    number: null,
-    description: '',
-    min: null,
-    max: null,
-    icon: null,
-  });
 
   const [locale , setLocale] = useState('ar');
   // EVent Handlers
@@ -65,7 +60,7 @@ function App() {
   useEffect(() => {
     // tring redux
     //dispatch(changeResult());
-    console.log("this is dispatch");
+    //console.log("this is dispatch");
     dispatch(fetchWeather());
 
     i18n.changeLanguage('ar');
@@ -73,42 +68,6 @@ function App() {
 
   useEffect(() => {
     setDateAndTime(moment().format('LLL'));
-    axios.get(
-      'https://api.openweathermap.org/data/2.5/weather?q=cairo&appid=e74d76f86bacc61e288f8127b8ff2cd0',
-      {
-        cancelToken: new axios.CancelToken((c) => {
-          cancelAxios = c;
-        })
-      }
-      )
-      .then(function (response) {
-        // handle success
-        const responseTemp = Math.round(response.data.main.temp - 272.15);
-        const min = Math.round(response.data.main.temp_min - 272.15);
-        const max = Math.round(response.data.main.temp_max - 272.15);
-        const description = response.data.weather[0].description;
-        const icon = response.data.weather[0].icon;
-        //console.log(response);
-        setTemp({
-          number: responseTemp,
-          description,
-          min,
-          max,
-          icon,
-        })
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .finally(function () {
-        // always executed
-      });
-
-    return () => {
-      console.log('canseling')
-      cancelAxios();
-    }
   },[]);
   return (
     <>
